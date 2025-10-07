@@ -23,7 +23,6 @@ namespace Telegram.User.Net
 
                     case "server_address": loginInfo = config.ip; break;// test DC
 
-                    case "session_pathname": loginInfo = $"/{config.phone_number}.session"; break;
 
                     default: loginInfo = null; break;
                 }

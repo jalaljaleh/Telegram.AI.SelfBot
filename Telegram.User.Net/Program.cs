@@ -20,7 +20,7 @@ namespace Telegram.User.Net
 
             IServiceProvider services = new ServiceCollection()
                 .AddSingleton(config)
-                .AddSingleton<WTelegram.Client>(x => new WTelegram.Client(config.api_id, config.api_hash))
+                .AddSingleton<WTelegram.Client>(x => new WTelegram.Client(config.api_id, config.api_hash, $@"{Directory.GetCurrentDirectory()}\{config.phone_number}.session"))
                 .AddSingleton<AiChatService>()
 
                 .AddSingleton<MessageHandler>()
