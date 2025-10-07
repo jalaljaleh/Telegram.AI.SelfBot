@@ -21,10 +21,11 @@ namespace Telegram.User.Net
             IServiceProvider services = new ServiceCollection()
                 .AddSingleton(config)
                 .AddSingleton<WTelegram.Client>(x => new WTelegram.Client(config.api_id, config.api_hash))
-                .AddSingleton<UpdatesHandler>()
-                .AddSingleton<MessageHandler>()
-
                 .AddSingleton<AiChatService>()
+
+                .AddSingleton<MessageHandler>()
+                .AddSingleton<UpdatesHandler>()
+
                 .BuildServiceProvider();
 
             await StartAsync(services);
@@ -43,7 +44,7 @@ namespace Telegram.User.Net
 
             await client.LoginAsync(config);
 
-            // MessageHandler
+           
             var updatesHandler = services.GetRequiredService<UpdatesHandler>();
             await updatesHandler.InitializeAsync();
 

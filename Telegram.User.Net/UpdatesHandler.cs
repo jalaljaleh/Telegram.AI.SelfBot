@@ -19,8 +19,8 @@ namespace Telegram.User.Net
         {
             _services = services;
             _client = services.GetRequiredService<Client>();
+            _messageHandler = services.GetRequiredService<MessageHandler>();
             _manager = _client.WithUpdateManager(Client_OnUpdate);
-            _messageHandler = _services.GetRequiredService<MessageHandler>();
         }
         public async Task InitializeAsync()
         {

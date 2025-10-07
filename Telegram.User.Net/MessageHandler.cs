@@ -32,13 +32,14 @@ namespace Telegram.User.Net
             // await _client.ReadHistory(user.ToInputPeer());
 
             bool _aiResponse = await _ai.ReplyMessageWithAi(Message, user);
-            if (!_aiResponse)
-                Helpers.Log.Invoke(2, "user message ignored !");
+            if (_aiResponse)
+                return;
 
-                // await _client.Messages_SendReaction(user.ToInputPeer(), Message.id, new TL.Reaction[] { new TL.ReactionEmoji { emoticon = "👀" } }, true, true);
+            // await _client.Messages_SendReaction(user.ToInputPeer(), Message.id, new TL.Reaction[] { new TL.ReactionEmoji { emoticon = "👀" } }, true, true);
+            Helpers.Log.Invoke(2, "user message ignored !");
         }
 
-       
+
         public async Task MessageReceivedAsync(UpdateNewMessage Message, TL.ChatBase chat)
         {
             Helpers.Log.Invoke(2, "channel message ignored !");

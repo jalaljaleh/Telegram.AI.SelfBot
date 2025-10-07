@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Telegram.User.Net
 {
-    internal class ConfigurationService
+    public class ConfigurationService
     {
         public ConfigurationService() { }
         public int api_id { get; set; }

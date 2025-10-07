@@ -33,14 +33,12 @@ namespace Telegram.User.Net
         private readonly JsonSerializerOptions _jsonOptions;
         readonly IServiceProvider _services;
         readonly Client _client;
-        readonly AiChatService _ai;
         readonly ConfigurationService _configuration;
 
         public AiChatService(IServiceProvider services)
         {
             _services = services;
             _client = services.GetRequiredService<Client>();
-            _ai = services.GetRequiredService<AiChatService>();
             _configuration = services.GetRequiredService<ConfigurationService>();
 
             _http = new();
@@ -122,7 +120,7 @@ namespace Telegram.User.Net
 
             var prompet = $"{_configuration.Prompt}\nContext:{historyText}\nNew User message:{Message.message}";
 
-            var aiResponse = await _ai.QueryAsync(null, prompet, user.id.ToString());
+            var aiResponse = await QueryAsync(null, prompet, user.id.ToString());
             if (aiResponse is not null)
             {
                 await _client.SendMessageAsync(user.ToInputPeer(), aiResponse, null, Message.id);
