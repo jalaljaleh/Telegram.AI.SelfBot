@@ -31,12 +31,19 @@ namespace Telegram.User.Net
 
             // await _client.ReadHistory(user.ToInputPeer());
 
-            bool _aiResponse = await _ai.ReplyMessageWithAi(Message, user);
-            if (_aiResponse)
-                return;
+            // Pass message to aggregator. When it decides to flush, it calls the aiHandler.
+            await MessageAggregator.HandleIncomingMessageAsync(
+                user.ID,
+                Message.message ?? string.Empty,
+                async aggregatedText =>
+                {
+                    // existing AI call - only invoked once per aggregated block
+                    bool aiResponse = await _ai.ReplyMessageWithAi(Message, user);
+                    if (aiResponse) return true;
 
-            // await _client.Messages_SendReaction(user.ToInputPeer(), Message.id, new TL.Reaction[] { new TL.ReactionEmoji { emoticon = "👀" } }, true, true);
-            Helpers.Log.Invoke(2, "user message ignored !");
+                    Helpers.Log.Invoke(2, "user message ignored !");
+                    return false;
+                });
         }
 
 

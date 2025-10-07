@@ -103,7 +103,7 @@ namespace Telegram.User.Net
             if (TryAcquireSlot() is false)
                 return false;
 
-            var historyResp = await _client.Messages_GetHistory(user.ToInputPeer(), offset_id: Message.id, limit: 15);
+            var historyResp = await _client.Messages_GetHistory(user.ToInputPeer(), offset_id: Message.id, limit: 10);
             var historyMsgs = historyResp.Messages
                 .OfType<Message>()
                 .Where(m => m.id != Message.id && !string.IsNullOrEmpty(m.message))
@@ -134,7 +134,7 @@ namespace Telegram.User.Net
             // each entry: "Sender: text"
             var lines = msgs.Select(m =>
             {
-                var sender = m.from_id?.ToString() ?? ("unknown");
+                var sender = m.from_id == _client.UserId ? "Me" : "Contact";
                 var text = m.message.Replace("\r\n", " ").Replace("\n", " ");
                 if (text.Length > 500) text = text.Substring(0, 500) + "…";
                 return $"{sender}: {text}";
